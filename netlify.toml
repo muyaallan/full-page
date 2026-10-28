@@ -1,0 +1,22 @@
+[build]
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/auth/magic-link"
+  to = "/.netlify/functions/auth-magic-link"
+  status = 200
+
+[[redirects]]
+  from = "/api/auth-verify"
+  to = "/.netlify/functions/auth-verify"
+  status = 200
+
+[[redirects]]
+  from = "/api/auth/session"
+  to = "/.netlify/functions/auth-session"
+  status = 200
+
+[[redirects]]
+  from = "/api/auth/sign-out"
+  to = "/.netlify/functions/auth-sign-out"
+  status = 200

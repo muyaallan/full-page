@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Dashboard — Copy-Proof Tools</title>
+<link rel="stylesheet" href="theme.css" />
+<link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+  <div class="shell">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">✎</div>
+        <span>Copy-Proof Tools</span>
+      </div>
+
+      <nav class="primary">
+        <a href="#home"    class="nav-item active" data-route="home">Home</a>
+        <a href="#profile" class="nav-item" data-route="profile">Profile</a>
+        <a href="#settings" class="nav-item" data-route="settings">Settings</a>
+        <a href="#controls" class="nav-item" data-route="controls">Text controls</a>
+        <a href="#sources" class="nav-item" data-route="sources">Sources</a>
+      </nav>
+
+      <div class="nav-section">
+        <div class="nav-section-title">MAKE ENT STUDIO</div>
+        <a href="https://makeent.netlify.app/blog" target="_self">Blogs</a>
+        <a href="https://makeent.netlify.app/shop" target="_self">Shop</a>
+        <a href="https://makeent.netlify.app/subscribe" target="_self">Newsletter</a>
+        <a href="https://makeent.netlify.app/contact" target="_self">Contact</a>
+        <a href="https://makeent.netlify.app" target="_self">View Studio</a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">LEGAL</div>
+        <a href="https://makeent.netlify.app/privacy" target="_self">Privacy</a>
+        <a href="https://makeent.netlify.app/terms" target="_self">Terms</a>
+        <a href="https://makeent.netlify.app/cookies" target="_self">Cookies</a>
+        <a href="https://makeent.netlify.app/refunds" target="_self">Refunds</a>
+        <a href="https://makeent.netlify.app/help/pricing-and-billing" target="_self">Pricing</a>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-chip">
+          <div class="avatar" id="sbAvatar">•</div>
+          <div class="user-meta">
+            <div class="user-name" id="sbName">…</div>
+            <div class="user-email" id="sbEmail">…</div>
+          </div>
+        </div>
+        <button class="signout" id="signOutBtn">Sign out</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <header class="topbar">
+        <button class="back" id="backBtn" hidden>← Back</button>
+        <h1 id="pageTitle">Home</h1>
+        <div class="top-actions">
+          <button id="openWelcome">Welcome page</button>
+          <button id="openOptions">Extension settings</button>
+        </div>
+      </header>
+
+      <!-- HOME -->
+      <section class="view" data-view="home">
+        <div class="hero-card">
+          <h2>Welcome back, <span id="firstName">friend</span>.</h2>
+          <p>Your toolkit is ready. Capture, copy, and extract — with settings that follow your account.</p>
+        </div>
+
+        <div class="quick-grid">
+          <button class="quick" id="qaCapture">
+            <div class="qi">📸</div>
+            <div><strong>Full-page capture</strong><span>Capture the active tab</span></div>
+          </button>
+          <button class="quick" id="qaCopy">
+            <div class="qi">📋</div>
+            <div><strong>Copy article</strong><span>Extract main text</span></div>
+          </button>
+          <button class="quick" id="qaHighlight">
+            <div class="qi">🖍</div>
+            <div><strong>Highlight selection</strong><span>Alt+H</span></div>
+          </button>
+          <button class="quick" id="qaShortcuts">
+            <div class="qi">⌨</div>
+            <div><strong>Shortcuts</strong><span>Alt+C toggle unlock</span></div>
+          </button>
+        </div>
+
+        <div class="ad-slot horizontal">
+          <!-- Placeholder for AdSense via iframe pattern -->
+        </div>
+
+        <div class="info-grid">
+          <div class="info">
+            <h3>Your account</h3>
+            <p class="muted">Signed in with a magic link. Sessions are stored in memory and cleared when you close the browser unless you chose "remember me".</p>
+            <a href="#profile" class="link" data-route="profile">Open profile →</a>
+          </div>
+          <div class="info">
+            <h3>Text controls</h3>
+            <p class="muted">Configure how article extraction scores content, which tags are ignored, and how highlights are colored by default.</p>
+            <a href="#controls" class="link" data-route="controls">Open text controls →</a>
+          </div>
+          <div class="info">
+            <h3>Sources</h3>
+            <p class="muted">See how the extension is architected — the entry points, content script, capture engine, and authentication layer.</p>
+            <a href="#sources" class="link" data-route="sources">Open sources →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROFILE -->
+      <section class="view" data-view="profile" hidden>
+        <div class="card">
+          <h2>Profile</h2>
+          <div class="kv">
+            <div><dt>Name</dt><dd id="pName">—</dd></div>
+            <div><dt>Email</dt><dd id="pEmail">—</dd></div>
+            <div><dt>User ID</dt><dd id="pId">—</dd></div>
+            <div><dt>Signed in</dt><dd id="pSince">—</dd></div>
+            <div><dt>Account type</dt><dd id="pPlan">Free</dd></div>
+          </div>
+          <div class="row">
+            <button id="changeEmail">Change email</button>
+            <button class="danger" id="deleteAccount">Delete account</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="view" data-view="settings" hidden>
+        <div class="card">
+          <h2>Settings</h2>
+          <label class="setting">
+            <input type="checkbox" id="sRemember" />
+            <div>
+              <strong>Stay signed in</strong>
+              <span>Keep your session across browser restarts.</span>
+            </div>
+          </label>
+          <label class="setting">
+            <input type="checkbox" id="sOpenDashboard" checked />
+            <div>
+              <strong>Open dashboard after sign-in</strong>
+              <span>Otherwise the welcome page remains the default landing.</span>
+            </div>
+          </label>
+          <label class="setting">
+            <input type="number" id="sMaxHeight" min="1000" max="100000" step="1000" />
+            <div>
+              <strong>Max screenshot height (px)</strong>
+              <span>Very tall pages stop at this height.</span>
+            </div>
+          </label>
+          <div class="row"><button class="primary" id="saveSettings">Save</button></div>
+        </div>
+      </section>
+
+      <!-- TEXT CONTROLS -->
+      <section class="view" data-view="controls" hidden>
+        <div class="card">
+          <h2>Text controls</h2>
+          <label class="setting">
+            <input type="checkbox" id="cIgnoreNav" checked />
+            <div><strong>Ignore navigation &amp; footers</strong><span>Strip &lt;nav&gt;, &lt;footer&gt;, &lt;aside&gt; on article extraction.</span></div>
+          </label>
+          <label class="setting">
+            <input type="checkbox" id="cStripAds" checked />
+            <div><strong>Strip ads and cookie banners</strong><span>Removes elements matching common ad/cookie selectors.</span></div>
+          </label>
+          <label class="setting">
+            <input type="checkbox" id="cMinLinkPenalty" checked />
+            <div><strong>Penalize link-heavy blocks</strong><span>Downrank candidates that are mostly link text.</span></div>
+          </label>
+          <label class="setting">
+            <input type="color" id="cDefaultColor" value="#ffe066" />
+            <div><strong>Default highlight color</strong><span>Used when you press Alt+H.</span></div>
+          </label>
+          <div class="row"><button class="primary" id="saveControls">Save</button></div>
+        </div>
+      </section>
+
+      <!-- SOURCES -->
+      <section class="view" data-view="sources" hidden>
+        <div class="card">
+          <h2>Sources</h2>
+          <p class="muted">The extension is split into focused modules. Click a file to see its role.</p>
+          <ul class="sources">
+            <li><button data-src="index">index.js</button><span>Extension entry point — install, welcome, routing.</span></li>
+            <li><button data-src="auth">auth.js</button><span>Magic-link flow and session persistence.</span></li>
+            <li><button data-src="content">content.js</button><span>Page interaction: highlight, copy, selection chip.</span></li>
+            <li><button data-src="capture">sw.js</button><span>Background: capture engine, clipboard bridge.</span></li>
+            <li><button data-src="popup">popup.js</button><span>Toolbar popup state and controls.</span></li>
+            <li><button data-src="dashboard">dashboard.js</button><span>This dashboard.</span></li>
+            <li><button data-src="settings">settings</button><span>Preferences and account settings.</span></li>
+          </ul>
+          <pre id="srcPreview" class="src-preview">Select a file to see its role.</pre>
+        </div>
+      </section>
+
+      <footer class="main-footer">
+        <span>© 2019 – 2026 MAKE ENT STUDIO · All Rights Reserved</span>
+        <span class="muted">Remote creative technology studio · Available worldwide</span>
+      </footer>
+    </main>
+  </div>
+
+  <script src="auth.js"></script>
+  <script src="ads.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

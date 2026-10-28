@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="theme.css" />
+<title>Copy-Proof Tools</title>
+<style>
+  body {
+    margin: 0; width: 360px; background: var(--panel); color: var(--text);
+    font: 13px/1.5 var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  header {
+    padding: 12px 14px; border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; gap: 8px;
+    background: color-mix(in oklab, var(--panel) 92%, transparent);
+    backdrop-filter: blur(8px);
+  }
+  header .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(180deg, var(--accent-2), var(--accent));
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 28%, transparent);
+  }
+  header strong { font-weight: 600; letter-spacing: -0.01em; }
+  header .status {
+    margin-left: auto; font-size: 11px; color: var(--muted);
+    font-family: var(--font-mono);
+    max-width: 170px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  section { padding: 12px 14px; border-bottom: 1px solid var(--line); }
+  section:last-child { border-bottom: 0; }
+  h3 {
+    margin: 0 0 8px; font-size: 10.5px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--muted-2); font-weight: 700;
+  }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 6px 0; }
+  .row:first-child { margin-top: 0; }
+  .row:last-child  { margin-bottom: 0; }
+  .muted { color: var(--muted); }
+
+  button {
+    font: inherit; border: 1px solid var(--line); background: var(--panel-2);
+    color: var(--text); padding: 7px 10px; border-radius: var(--r-md); cursor: pointer;
+    transition: background var(--dur-fast) var(--ease),
+                border-color var(--dur-fast) var(--ease),
+                transform var(--dur-fast) var(--ease);
+  }
+  button:hover { background: var(--panel-3); border-color: var(--line-strong); }
+  button:active { transform: translateY(1px); }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  button.primary {
+    background: var(--accent); color: var(--accent-ink);
+    border-color: color-mix(in oklab, var(--accent) 60%, black);
+    font-weight: 600;
+  }
+  button.primary:hover { background: var(--accent-2); }
+  button.danger { color: var(--danger);
+    border-color: color-mix(in oklab, var(--danger) 40%, var(--line)); }
+  button.ghost { background: transparent; }
+
+  .swatches { display: flex; gap: 6px; }
+  .sw {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 2px solid var(--panel); box-shadow: 0 0 0 1px var(--line);
+    cursor: pointer;
+    transition: transform var(--dur-fast) var(--ease),
+                box-shadow var(--dur-fast) var(--ease);
+  }
+  .sw:hover { transform: scale(1.08); }
+  .sw.active { box-shadow: 0 0 0 2px var(--accent); }
+
+  .switch {
+    position: relative; width: 42px; height: 24px;
+    background: var(--line-strong); border-radius: 999px;
+    cursor: pointer; transition: background var(--dur) var(--ease); flex: none;
+  }
+  .switch::after {
+    content: ""; position: absolute; top: 2px; left: 2px;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: #fff; box-shadow: var(--shadow-1);
+    transition: left var(--dur) var(--ease);
+  }
+  .switch.on { background: var(--accent); }
+  .switch.on::after { left: 20px; }
+
+  ul.hl-list { list-style: none; padding: 0; margin: 0;
+               max-height: 168px; overflow-y: auto; }
+  ul.hl-list li {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 6px; border-radius: var(--r-sm); cursor: pointer;
+    transition: background var(--dur-fast) var(--ease);
+  }
+  ul.hl-list li:hover { background: var(--panel-2); }
+  ul.hl-list .swatch-mini {
+    width: 10px; height: 10px; border-radius: 50%; flex: none;
+    box-shadow: 0 0 0 1px var(--line-strong);
+  }
+  ul.hl-list .txt {
+    flex: 1; white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis; font-size: 12px;
+  }
+  ul.hl-list .del {
+    border: 0; padding: 2px 6px; background: transparent; color: var(--muted);
+    border-radius: var(--r-xs);
+  }
+  ul.hl-list .del:hover { color: var(--danger); background: var(--danger-soft); }
+
+  .account-chip {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; border-top: 1px solid var(--line);
+    background: var(--bg-elev);
+  }
+  .account-chip .avatar {
+    width: 30px; height: 30px; border-radius: 50%; flex: none;
+    background: linear-gradient(180deg, var(--accent-2), var(--accent));
+    color: var(--accent-ink);
+    display: grid; place-items: center; font-weight: 700; font-size: 13px;
+  }
+  .account-chip .meta { flex: 1; min-width: 0; }
+  .account-chip .name  { font-weight: 600; font-size: 12.5px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .account-chip .email { font-size: 11.5px; color: var(--muted);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .account-chip .icon-btn {
+    border: 0; background: transparent; color: var(--muted);
+    padding: 4px 6px; font-size: 12px; cursor: pointer;
+    border-radius: var(--r-sm);
+    transition: color var(--dur-fast) var(--ease),
+                background var(--dur-fast) var(--ease);
+  }
+  .account-chip .icon-btn:hover { color: var(--text); background: var(--panel-2); }
+
+  .signin-panel { display: none; padding: 18px 14px 20px; }
+  .signin-panel.on { display: block; }
+  .signin-panel h2 { font-size: 15px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .signin-panel p  { color: var(--muted); font-size: 12.5px; margin: 0 0 12px; }
+  .signin-panel input[type="email"] {
+    width: 100%; background: var(--bg-elev); color: var(--text);
+    border: 1px solid var(--line); border-radius: var(--r-md);
+    padding: 9px 10px; font: inherit; margin-bottom: 8px;
+    transition: border-color var(--dur-fast) var(--ease);
+  }
+  .signin-panel input[type="email"]:focus {
+    outline: none;
+    border-color: color-mix(in oklab, var(--accent) 60%, var(--line));
+  }
+  .signin-panel button { width: 100%; }
+  .signin-panel .msg {
+    margin-top: 10px; font-size: 12px; color: var(--muted); min-height: 16px;
+  }
+  .signin-panel .msg.err { color: var(--danger); }
+  .signin-panel .msg.ok  { color: var(--success); }
+
+  .tools { display: none; }
+  .tools.on { display: block; }
+
+  footer {
+    padding: 9px 14px; color: var(--muted); font-size: 11px;
+    text-align: center; border-top: 1px solid var(--line);
+    background: var(--bg-elev);
+  }
+  footer .studio-links {
+    display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  footer .studio-links a { color: var(--muted); text-decoration: none;
+    transition: color var(--dur-fast) var(--ease); }
+  footer .studio-links a:hover { color: var(--accent); }
+  footer .studio-links a.primary { color: var(--accent); font-weight: 600; }
+
+  kbd {
+    background: var(--bg-elev); border: 1px solid var(--line);
+    border-bottom-width: 2px; padding: 0 4px; border-radius: var(--r-xs);
+    font: 11px var(--font-mono); color: var(--text);
+  }
+</style>
+</head>
+<body>
+  <header>
+    <span class="dot"></span>
+    <strong>Copy-Proof Tools</strong>
+    <span class="status" id="status">…</span>
+  </header>
+
+  <!-- ============ SIGNED OUT ============ -->
+  <div class="signin-panel" id="signinPanel">
+    <h2>Sign in to use Copy-Proof Tools</h2>
+    <p>We'll email you a magic link. No password needed.</p>
+    <form id="signinForm">
+      <input id="popupEmail" type="email" placeholder="you@example.com" required autocomplete="email" />
+      <button class="primary" type="submit" id="popupSendBtn">Continue</button>
+    </form>
+    <div class="msg" id="popupMsg"></div>
+  </div>
+
+  <!-- ============ SIGNED IN ============ -->
+  <div class="tools" id="toolsView">
+
+    <section>
+      <h3>Copy</h3>
+      <div class="row">
+        <button type="button" id="btn-copy-sel" style="flex:1" title="Selection → article → full page">Copy (auto)</button>
+        <button type="button" id="btn-copy-article" style="flex:1" title="Extract main article text">Copy article</button>
+      </div>
+      <div class="row">
+        <button type="button" id="btn-copy-page" class="primary" style="flex:1">Copy full page text</button>
+      </div>
+      <div class="row">
+        <button type="button" id="btn-extract" style="flex:1" title="Detect headings, paragraphs, links">Preview extracted text…</button>
+      </div>
+    </section>
+
+    <section>
+      <h3>Highlight</h3>
+      <div class="row">
+        <span class="muted">Color</span>
+        <div class="swatches" id="swatches">
+          <span class="sw" data-color="yellow" style="background:#ffe066"></span>
+          <span class="sw" data-color="green"  style="background:#b2f2bb"></span>
+          <span class="sw" data-color="blue"   style="background:#a5d8ff"></span>
+          <span class="sw" data-color="pink"   style="background:#ffc9de"></span>
+          <span class="sw" data-color="orange" style="background:#ffd8a8"></span>
+        </div>
+      </div>
+      <div class="row">
+        <button type="button" id="btn-hl" class="primary" style="flex:1">Highlight selection</button>
+      </div>
+    </section>
+
+    <section>
+      <h3>Protection</h3>
+      <div class="row">
+        <span class="muted">Unlock copy on this page</span>
+        <div class="switch" id="unlock-switch" role="switch" aria-checked="false" tabindex="0"></div>
+      </div>
+    </section>
+
+    <section>
+      <h3>Screenshot</h3>
+      <div class="row">
+        <button type="button" id="btn-shot" class="primary" style="flex:1">Take full-page screenshot</button>
+      </div>
+      <div class="row">
+        <button type="button" id="btn-pick-scroller" style="flex:1" title="Pick an inner scrollable container">Pick inner scroller…</button>
+      </div>
+    </section>
+
+    <section>
+      <h3>
+        Highlights on this page
+        <span class="muted" id="hl-count" style="font-weight:400;text-transform:none;letter-spacing:0"></span>
+      </h3>
+      <ul class="hl-list" id="hl-list"></ul>
+      <div class="row" id="hl-empty-row" hidden>
+        <span class="muted">No highlights yet.</span>
+      </div>
+    </section>
+
+    <section>
+      <div class="row">
+        <button type="button" id="btn-dashboard" class="ghost" style="flex:1">Open dashboard</button>
+        <button type="button" id="btn-welcome" class="ghost" style="flex:1">Welcome page</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ ACCOUNT CHIP ============ -->
+  <div class="account-chip" id="accountChip" hidden>
+    <div class="avatar" id="chipAvatar">•</div>
+    <div class="meta">
+      <div class="name" id="chipName">—</div>
+      <div class="email" id="chipEmail">—</div>
+    </div>
+    <button type="button" class="icon-btn" id="chipDashboard" title="Open dashboard">Dashboard</button>
+    <button type="button" class="icon-btn" id="chipSignout" title="Sign out">Sign out</button>
+  </div>
+
+  <footer>
+    <div style="margin-bottom:4px">
+      <kbd>Alt</kbd>+<kbd>H</kbd> highlight ·
+      <kbd>Alt</kbd>+<kbd>C</kbd> unlock ·
+      <kbd>Alt</kbd>+<kbd>S</kbd> shot
+    </div>
+    <div class="studio-links">
+      <a class="primary" href="https://makeent.netlify.app" target="_blank" rel="noopener">Studio</a>
+      <span>·</span>
+      <a href="https://makeent.netlify.app/blog" target="_blank" rel="noopener">Blog</a>
+      <span>·</span>
+      <a href="https://makeent.netlify.app/shop" target="_blank" rel="noopener">Shop</a>
+      <span>·</span>
+      <a href="https://makeent.netlify.app/subscribe" target="_blank" rel="noopener">Newsletter</a>
+    </div>
+  </footer>
+
+  <script src="auth.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
+
+

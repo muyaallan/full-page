@@ -1,0 +1,44 @@
+/* ============ Selection chip ============ */
+.__cpt-chip {
+  position: absolute;
+  z-index: 2147483600;
+  display: none;
+  gap: 2px;
+  padding: 4px;
+  background: color-mix(in oklab, #1b212c 92%, transparent);
+  color: #e8ecf3;
+  border: 1px solid #33405a;
+  border-radius: 10px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), 0 1px 0 rgba(255,255,255,.05) inset;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font: 12px ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  transform: translate(-50%, 0);
+  user-select: none;
+  animation: __cpt-in 120ms cubic-bezier(.2,.8,.2,1);
+}
+@keyframes __cpt-in {
+  from { opacity: 0; transform: translate(-50%, 4px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+.__cpt-chip button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 5px 9px;
+  border-radius: 7px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 500;
+  transition: background 120ms ease, color 120ms ease;
+}
+.__cpt-chip button:hover {
+  background: rgba(255, 255, 255, 0.10);
+}
+.__cpt-chip button[data-action="drag"] {
+  cursor: grab;
+  font-weight: 700;
+  padding: 5px 8px;
+  color: #f5d76e;
+}
+.__cpt-chip button[data-action="drag"]:active { cursor: grabbing; }

@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="theme.css" />
+<title>Copy-Proof Tools — MAKE ENT STUDIO</title>
+<style>
+  body {
+    margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
+    font: 15px/1.6 var(--font-sans);
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 2px; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  .topbar {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 0 22px; border-bottom: 1px solid var(--line);
+    margin-bottom: 36px;
+  }
+  .topbar .brand { display: flex; align-items: center; gap: 10px;
+                   font-weight: 600; letter-spacing: -0.01em; }
+  .topbar .logo {
+    width: 34px; height: 34px; border-radius: var(--r-md);
+    background: linear-gradient(180deg, var(--accent-2), var(--accent));
+    display: grid; place-items: center;
+    color: var(--accent-ink); font-weight: 700;
+    box-shadow: var(--shadow-1);
+  }
+  .topbar nav { margin-left: auto; display: flex; gap: 18px; font-size: 13.5px; }
+  .topbar nav a { color: var(--muted); }
+  .topbar nav a:hover { color: var(--text); text-decoration: none; }
+
+  .hero { display: grid; grid-template-columns: 1.15fr 1fr;
+          gap: 44px; align-items: center; margin-bottom: 48px; }
+  @media (max-width: 820px) { .hero { grid-template-columns: 1fr; gap: 24px; } }
+  .hero h1 { font-size: 40px; line-height: 1.14; margin: 0 0 14px;
+             letter-spacing: -0.025em; }
+  .hero p.lede { font-size: 17px; color: var(--muted); margin: 0 0 24px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--accent-soft);
+    color: var(--text);
+    border: 1px solid color-mix(in oklab, var(--accent) 40%, transparent);
+    padding: 4px 10px; border-radius: var(--r-pill);
+    font-size: 12px; font-weight: 600; margin-bottom: 16px;
+  }
+
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--r-xl); padding: 22px;
+    box-shadow: var(--shadow-2);
+  }
+  .card h3 { margin: 0 0 6px; font-size: 16px; }
+  .card p.sub { margin: 0 0 16px; color: var(--muted); font-size: 13.5px; }
+  .field { display: flex; gap: 8px; margin-bottom: 10px; }
+  input[type="email"] {
+    flex: 1; background: var(--bg-elev); color: var(--text);
+    border: 1px solid var(--line); border-radius: var(--r-md);
+    padding: 11px 12px; font: inherit;
+    transition: border-color var(--dur-fast) var(--ease);
+  }
+  input[type="email"]:focus {
+    outline: none;
+    border-color: color-mix(in oklab, var(--accent) 60%, var(--line));
+  }
+  button {
+    font: inherit; border: 1px solid var(--line); background: var(--panel-2);
+    color: var(--text); padding: 10px 16px; border-radius: var(--r-md);
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease),
+                border-color var(--dur-fast) var(--ease),
+                transform var(--dur-fast) var(--ease);
+  }
+  button:hover { background: var(--panel-3); border-color: var(--line-strong); }
+  button:active { transform: translateY(1px); }
+  button.primary {
+    background: var(--accent); color: var(--accent-ink);
+    border-color: color-mix(in oklab, var(--accent) 60%, black);
+    font-weight: 600;
+  }
+  button.primary:hover { background: var(--accent-2); }
+  button[disabled] { opacity: .5; cursor: not-allowed; }
+  .status {
+    margin-top: 12px; padding: 10px 12px; border-radius: var(--r-md);
+    background: var(--bg-elev); border: 1px solid var(--line);
+    font-size: 13px; color: var(--muted); min-height: 40px;
+  }
+  .status.ok  { color: var(--success); border-color: color-mix(in oklab, var(--success) 40%, var(--line)); }
+  .status.err { color: var(--danger);  border-color: color-mix(in oklab, var(--danger)  40%, var(--line)); }
+
+  .signed-in {
+    display: none; align-items: center; gap: 12px;
+    background: var(--panel); border: 1px solid var(--line);
+    padding: 14px 16px; border-radius: var(--r-lg);
+    box-shadow: var(--shadow-2);
+  }
+  .signed-in.on { display: flex; }
+  .signed-in .avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(180deg, var(--accent-2), var(--accent));
+    color: var(--accent-ink);
+    display: grid; place-items: center; font-weight: 700;
+  }
+
+  .ad-slot {
+    margin: 40px 0; min-height: 100px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--panel); border: 1px dashed var(--line);
+    border-radius: var(--r-lg); padding: 12px;
+    color: var(--muted-2); font-size: 12px;
+  }
+  .ad-slot.horizontal { min-height: 100px; }
+  .ad-slot.rectangle  { min-height: 260px; max-width: 340px;
+                        margin-left: auto; margin-right: auto; }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px; margin-bottom: 40px;
+  }
+  .feat {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--r-lg); padding: 20px;
+    transition: transform var(--dur-fast) var(--ease),
+                border-color var(--dur-fast) var(--ease);
+  }
+  .feat:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in oklab, var(--accent) 45%, var(--line));
+  }
+  .feat .ico {
+    width: 34px; height: 34px; border-radius: var(--r-md);
+    background: var(--accent-soft);
+    display: grid; place-items: center;
+    margin-bottom: 10px; font-size: 16px;
+  }
+  .feat h4 { margin: 0 0 6px; font-size: 15px; }
+  .feat p  { margin: 0; color: var(--muted); font-size: 13.5px; }
+
+  .section-two-col {
+    display: grid; grid-template-columns: 1fr 340px; gap: 40px;
+    align-items: start; margin: 48px 0;
+  }
+  @media (max-width: 900px) { .section-two-col { grid-template-columns: 1fr; } }
+
+  .rich h2 { font-size: 24px; margin: 0 0 12px; letter-spacing: -0.015em; }
+  .rich h3 { font-size: 17px; margin: 24px 0 8px; }
+  .rich p  { color: var(--muted); margin: 0 0 14px; }
+  .rich ul { color: var(--muted); padding-left: 20px; margin: 0 0 14px; }
+  .rich code {
+    background: var(--panel); border: 1px solid var(--line);
+    padding: 1px 6px; border-radius: var(--r-xs);
+    font: 13px var(--font-mono);
+  }
+  kbd {
+    background: var(--panel); border: 1px solid var(--line);
+    border-bottom-width: 2px; padding: 1px 6px;
+    border-radius: var(--r-xs); font: 12px var(--font-mono);
+  }
+
+  .studio {
+    margin-top: 64px; padding: 24px;
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--r-xl); box-shadow: var(--shadow-2);
+  }
+  .studio h3 { margin: 0 0 4px; }
+  .studio p  { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
+  .studio-links { display: flex; flex-wrap: wrap; gap: 10px; }
+  .studio-links a {
+    color: var(--text); text-decoration: none; font-size: 13.5px;
+    padding: 6px 12px; border: 1px solid var(--line);
+    border-radius: var(--r-pill); background: var(--bg-elev);
+    transition: border-color var(--dur-fast) var(--ease),
+                background var(--dur-fast) var(--ease);
+  }
+  .studio-links a:hover {
+    border-color: color-mix(in oklab, var(--accent) 60%, var(--line));
+    background: var(--panel-2); text-decoration: none;
+  }
+
+  footer {
+    margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line);
+    color: var(--muted); font-size: 12.5px;
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+  }
+  footer .copy { margin-left: auto; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">✎</div>
+        <span>Copy-Proof Tools</span>
+      </div>
+      <nav>
+        <a href="https://makeent.netlify.app/blog" target="_self">Blog</a>
+        <a href="https://makeent.netlify.app/shop" target="_self">Shop</a>
+        <a href="https://makeent.netlify.app/contact" target="_self">Contact</a>
+        <a href="https://makeent.netlify.app" target="_self">Studio</a>
+      </nav>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <div class="badge">A MAKE ENT STUDIO product</div>
+        <h1>Highlight, copy, and capture — even on copy-protected pages.</h1>
+        <p class="lede">
+          Copy-Proof Tools is a professional browser toolkit for people who work with web content:
+          researchers, editors, designers, and creators. Select text, extract articles, take
+          pixel-perfect full-page screenshots, and drag text between apps — all from one extension.
+        </p>
+        <p>
+          <strong>Sign in with your email</strong> to unlock the full toolkit. Your account is
+          connected to the MAKE ENT STUDIO ecosystem — same login across our shop, blog, and tools.
+        </p>
+      </div>
+
+      <div>
+        <!-- Sign-in card -->
+        <div class="card" id="signinCard">
+          <h3>Sign in to Copy-Proof Tools</h3>
+          <p class="sub">We'll email you a magic link. No password required.</p>
+          <form id="signinForm">
+            <div class="field">
+              <input id="email" type="email" placeholder="you@example.com" required autocomplete="email" />
+              <button class="primary" type="submit" id="sendBtn">Continue</button>
+            </div>
+            <label style="display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px">
+              <input type="checkbox" id="remember" checked />
+              Remember me on this device
+            </label>
+          </form>
+          <div class="status" id="status">Enter your email to receive a sign-in link.</div>
+          <p style="margin:12px 0 0;color:var(--muted);font-size:12px">
+            By continuing you agree to our
+            <a href="https://makeent.netlify.app/terms" target="_self">Terms</a> and
+            <a href="https://makeent.netlify.app/privacy" target="_self">Privacy Policy</a>.
+          </p>
+        </div>
+
+        <!-- Signed-in card (hidden by default) -->
+        <div class="card signed-in" id="signedInCard">
+          <div class="avatar" id="avatar">•</div>
+          <div style="flex:1">
+            <div style="font-weight:600" id="displayName">Signed in</div>
+            <div style="color:var(--muted);font-size:13px" id="displayEmail"></div>
+          </div>
+          <button id="openDashboard">Dashboard</button>
+          <button id="signOutBtn">Sign out</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOP HORIZONTAL AD -->
+    <div class="ad-slot horizontal">
+      <!-- AdSense: paste your horizontal banner ad unit here -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+           data-ad-slot="0000000000"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>
+
+    <!-- FEATURES -->
+    <div class="grid">
+      <div class="feat">
+        <div class="ico">🖍</div>
+        <h4>Highlight anything</h4>
+        <p>Persistent highlights that survive reloads. Color, pin, and drag them wherever you want.</p>
+      </div>
+      <div class="feat">
+        <div class="ico">📋</div>
+        <h4>Copy-proof copy</h4>
+        <p>Bypass <code>user-select: none</code> and clipboard blockers. Copy entire articles in one click.</p>
+      </div>
+      <div class="feat">
+        <div class="ico">📸</div>
+        <h4>Full-page capture</h4>
+        <p>Scroll-and-stitch screenshots of the entire page — no more chopped-off screenshots.</p>
+      </div>
+      <div class="feat">
+        <div class="ico">🖱️</div>
+        <h4>Drag to anywhere</h4>
+        <p>Select text, drag it out. Drop into another tab or paste into any desktop app.</p>
+      </div>
+      <div class="feat">
+        <div class="ico">📝</div>
+        <h4>Article extraction</h4>
+        <p>Main-content detection strips ads, nav, and sidebars. Just the readable text.</p>
+      </div>
+      <div class="feat">
+        <div class="ico">🔒</div>
+        <h4>Account-tied</h4>
+        <p>One login across Copy-Proof Tools, the shop, and the blog. Your settings follow you.</p>
+      </div>
+    </div>
+
+    <!-- TWO COLUMN: rich content + rectangle ad -->
+    <section class="section-two-col">
+      <div class="rich">
+        <h2>Built for people who work with web content</h2>
+        <p>
+          Copy-Proof Tools began as an internal utility for the MAKE ENT STUDIO team. We work with
+          research, references, and long articles daily — and we got tired of fighting pages that
+          block selection, hide text behind overlays, or refuse to print cleanly.
+        </p>
+        <p>What we ended up with is a browser toolkit that does three things extremely well:</p>
+
+        <h3>1. Text on your terms</h3>
+        <p>
+          Whether you're citing a research paper, saving a product spec, or capturing a paragraph
+          from a paywalled news site, the extension gives you the text — clean, plain, and copied
+          through the extension's own clipboard pipeline so page scripts can't intercept it.
+        </p>
+        <ul>
+          <li>Select text → press <kbd>Alt</kbd>+<kbd>H</kbd> to highlight it</li>
+          <li>Right-click → <em>Copy article text</em> for main content only</li>
+          <li>Right-click → <em>Copy full page text</em> for the entire readable page</li>
+        </ul>
+
+        <h3>2. Screenshots that actually capture the page</h3>
+        <p>
+          Most screenshot tools capture what's on screen. Copy-Proof Tools drives the page —
+          scrolling from top to bottom, waiting for lazy-loaded images, hiding sticky headers
+          that would repeat, and stitching everything into one clean PNG.
+        </p>
+
+        <h3>3. Drag and drop across the browser</h3>
+        <p>
+          Select any text, hover the drag handle, and pull it anywhere. Drop into another tab,
+          or paste into a desktop app — the extension writes to the system clipboard the moment
+          the drag starts, so both targets work.
+        </p>
+
+        <h3>Connected to MAKE ENT STUDIO</h3>
+        <p>
+          Copy-Proof Tools is part of the MAKE ENT STUDIO ecosystem. Your account works across our
+          shop, blog, and tools. Presets, templates, and downloads from the shop, articles and
+          breakdowns on the blog, and your toolkit settings all live under the same login.
+        </p>
+      </div>
+
+      <aside>
+        <div class="ad-slot rectangle">
+          <!-- AdSense: paste your 300x250 ad unit here -->
+          <ins class="adsbygoogle"
+               style="display:inline-block;width:300px;height:250px"
+               data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+               data-ad-slot="0000000000"></ins>
+        </div>
+      </aside>
+    </section>
+
+    <!-- BOTTOM HORIZONTAL AD -->
+    <div class="ad-slot horizontal">
+      <!-- AdSense: bottom banner ad unit -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+           data-ad-slot="0000000000"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>
+
+    <!-- STUDIO STRIP -->
+    <section class="studio">
+      <h3>MAKE ENT STUDIO</h3>
+      <p>Remote creative technology studio · Available worldwide</p>
+      <div class="studio-links">
+        <a href="https://makeent.netlify.app" target="_self">View Studio</a>
+        <a href="https://makeent.netlify.app/blog" target="_self">Blog</a>
+        <a href="https://makeent.netlify.app/shop" target="_self">Shop</a>
+        <a href="https://makeent.netlify.app/subscribe" target="_self">Newsletter</a>
+        <a href="https://makeent.netlify.app/help/pricing-and-billing" target="_self">Pricing</a>
+        <a href="https://makeent.netlify.app/refunds" target="_self">Refunds</a>
+        <a href="https://makeent.netlify.app/contact" target="_self">Contact</a>
+      </div>
+    </section>
+
+    <footer>
+      <span>© 2019 – 2026 MAKE ENT STUDIO · All Rights Reserved</span>
+      <span class="copy">
+        <a href="https://makeent.netlify.app/privacy" target="_self">Privacy</a> ·
+        <a href="https://makeent.netlify.app/terms" target="_self">Terms</a> ·
+        <a href="https://makeent.netlify.app/cookies" target="_self">Cookies</a>
+      </span>
+    </footer>
+
+  </div>
+
+  <script src="auth.js"></script>
+  <script src="ads.js"></script>
+  <script src="welcome.js"></script>
+</body>
+</html>
+

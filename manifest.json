@@ -1,0 +1,76 @@
+{
+  "manifest_version": 3,
+  "name": "Copy-Proof Tools",
+  "version": "2.1.0",
+  "description": "Highlight, copy, and screenshot — a MAKE ENT STUDIO product.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArHmnbtdt4R/n5KqGXYa2N+FDzLzWsapWg4YyG0BovnFZOR2qHQ0fw/1tXIM3B1YNtrFNd8i3+VTBxw0YVEJA9v2eFlbBFI4H3JXiPEaMWVfdS3OcSxjDoQO9Ig41ZVkV8aw/1+ljlzCTF427WXpxHWdhyUFASysUFTv325hiYQzyi6t8JEBdQbf0oQSWX9uKK161Bjuyqga/M31mQ+Kc249btaCM4MG+0ROmxUr+Kg0JN+WPyJWULiSqtagjvjYj5lChxwNugSgSJ1fPXH6bI93u1Rz1euSY0a+EAr1YBCk3Uhy6rTSSjvhwDLgOJg9xSVNBX4uhUmtz69LIB5ZqVQIDAQAB",
+  "minimum_chrome_version": "116",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "downloads",
+    "debugger",
+    "contextMenus",
+    "clipboardWrite",
+    "offscreen",
+    "tabs"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "sw.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle",
+      "all_frames": false,
+      "match_about_blank": true
+    }
+  ],
+  "action": {
+    "default_title": "Copy-Proof Tools",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "commands": {
+    "highlight-selection": {
+      "suggested_key": { "default": "Alt+H" },
+      "description": "Highlight current selection"
+    },
+    "toggle-copy-unlock": {
+      "suggested_key": { "default": "Alt+C" },
+      "description": "Toggle copy protection override"
+    },
+    "screenshot-page": {
+      "suggested_key": { "default": "Alt+S" },
+      "description": "Take full-page screenshot"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "screenshot.html", "screenshot.js", "screenshot.css",
+        "auth-callback.html", "auth-callback.js", "auth.js",
+        "dashboard.html", "dashboard.js", "dashboard.css", "ads.js",
+        "extract.html", "extract.js", "extract.css"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://makeent.netlify.app;"
+  }
+}

@@ -1,0 +1,80 @@
+/* =========================================================
+ * screenshot.css — screenshot preview
+ * Depends on: theme.css
+ * ========================================================= */
+header {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; gap: 16px;
+  padding: 10px 16px;
+  background: color-mix(in oklab, var(--panel) 88%, transparent);
+  backdrop-filter: saturate(1.2) blur(10px);
+  -webkit-backdrop-filter: saturate(1.2) blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.brand { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.brand .dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 28%, transparent);
+}
+.brand .muted {
+  color: var(--muted); overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap; max-width: 40vw;
+}
+.sep { color: var(--muted-2); }
+.meta { display: flex; gap: 6px; margin-left: auto; }
+.pill {
+  font-size: 12px; padding: 3px 8px; border-radius: var(--r-pill);
+  border: 1px solid var(--line); color: var(--muted); background: var(--bg-elev);
+  font-family: var(--font-mono);
+}
+.actions { display: flex; gap: 8px; margin-left: 8px; }
+.actions button {
+  font: inherit; border: 1px solid var(--line); background: var(--panel-2);
+  color: var(--text); padding: 7px 12px; border-radius: var(--r-md);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease);
+}
+.actions button:hover { background: var(--panel-3); border-color: var(--line-strong); }
+.actions button.primary {
+  background: var(--accent); color: var(--accent-ink);
+  border-color: color-mix(in oklab, var(--accent) 60%, black);
+  font-weight: 600;
+}
+.actions button.primary:hover { background: var(--accent-2); }
+.actions button.danger {
+  color: var(--danger);
+  border-color: color-mix(in oklab, var(--danger) 40%, var(--line));
+}
+
+.stage {
+  min-height: calc(100vh - 56px);
+  display: grid; place-items: center; padding: 24px; overflow: auto;
+}
+.stage img {
+  max-width: 100%; border-radius: var(--r-md);
+  box-shadow: var(--shadow-3);
+  background: #fff;
+}
+.loading { color: var(--muted); }
+
+.zoom {
+  position: fixed; right: 16px; bottom: 16px;
+  display: flex; gap: 4px; padding: 4px;
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-2);
+}
+.zoom button {
+  border: 1px solid transparent; background: transparent;
+  color: var(--muted); padding: 5px 9px; font-size: 12px;
+  border-radius: var(--r-sm); cursor: pointer;
+  transition: background var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease);
+}
+.zoom button:hover { color: var(--text); background: var(--panel-2); }
+.zoom button.active {
+  background: var(--accent-soft); color: var(--text);
+  border-color: color-mix(in oklab, var(--accent) 40%, var(--line));
+}

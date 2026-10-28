@@ -1,0 +1,101 @@
+/* =========================================================
+ * extract.css — structured text preview
+ * Depends on: theme.css
+ * ========================================================= */
+header {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; gap: 14px;
+  padding: 10px 16px;
+  background: color-mix(in oklab, var(--panel) 88%, transparent);
+  backdrop-filter: saturate(1.2) blur(10px);
+  -webkit-backdrop-filter: saturate(1.2) blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.brand { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.brand .dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 28%, transparent);
+}
+.sep { color: var(--muted-2); }
+.meta { display: flex; gap: 6px; margin-left: auto; }
+.pill {
+  font-size: 12px; padding: 3px 8px; border-radius: var(--r-pill);
+  border: 1px solid var(--line); color: var(--muted); background: var(--bg-elev);
+  font-family: var(--font-mono);
+}
+.actions { display: flex; gap: 8px; margin-left: 8px; }
+.actions button {
+  font: inherit; border: 1px solid var(--line); background: var(--panel-2);
+  color: var(--text); padding: 7px 12px; border-radius: var(--r-md);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease);
+}
+.actions button:hover { background: var(--panel-3); border-color: var(--line-strong); }
+.actions button.primary {
+  background: var(--accent); color: var(--accent-ink);
+  border-color: color-mix(in oklab, var(--accent) 60%, black);
+  font-weight: 600;
+}
+.actions button.primary:hover { background: var(--accent-2); }
+.actions button.danger {
+  color: var(--danger);
+  border-color: color-mix(in oklab, var(--danger) 40%, var(--line));
+}
+
+.stage { min-height: calc(100vh - 56px); padding: 24px;
+         max-width: 900px; margin: 0 auto; }
+.loading { color: var(--muted); text-align: center; padding: 60px 0; }
+
+.blocks { display: flex; flex-direction: column; gap: 10px; }
+.block {
+  position: relative;
+  padding: 12px 16px; border-radius: var(--r-md);
+  border: 1px solid var(--line); background: var(--panel);
+  transition: border-color var(--dur-fast) var(--ease),
+              background var(--dur-fast) var(--ease);
+}
+.block:hover { border-color: var(--line-strong); }
+.block.copied { background: var(--success-soft);
+                border-color: color-mix(in oklab, var(--success) 40%, var(--line)); }
+.block .copy-btn {
+  position: absolute; top: 8px; right: 8px;
+  padding: 3px 8px; font-size: 11px;
+  border: 1px solid var(--line); background: var(--panel-2); color: var(--muted);
+  border-radius: var(--r-sm); cursor: pointer; opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease);
+}
+.block:hover .copy-btn { opacity: 1; }
+.block .copy-btn:hover { color: var(--text); }
+.block .kind {
+  display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--muted-2);
+  margin-right: 8px; vertical-align: middle;
+  font-family: var(--font-mono);
+}
+.block .body { margin: 6px 0 0; white-space: pre-wrap; word-break: break-word; }
+.block.heading h1, .block.heading h2, .block.heading h3,
+.block.heading h4, .block.heading h5, .block.heading h6 {
+  margin: 0; letter-spacing: -0.01em;
+}
+.block.link a { color: var(--accent); }
+.block.image img { max-width: 100%; border-radius: var(--r-sm); margin-top: 6px; display: block; }
+.block.code pre {
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--r-sm); padding: 10px; overflow-x: auto;
+  font: 12.5px/1.55 var(--font-mono); color: var(--text-dim);
+}
+
+.foot {
+  position: sticky; bottom: 0;
+  display: flex; align-items: center; gap: 16px;
+  padding: 10px 16px; border-top: 1px solid var(--line);
+  background: color-mix(in oklab, var(--panel) 92%, transparent);
+  backdrop-filter: blur(8px);
+  color: var(--muted); font-size: 12.5px;
+}
+.foot label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.foot input[type="checkbox"] { accent-color: var(--accent); }
+.foot .muted { margin-left: auto; }

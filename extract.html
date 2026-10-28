@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Text preview — Copy-Proof Tools</title>
+<link rel="stylesheet" href="theme.css" />
+<link rel="stylesheet" href="extract.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span class="dot"></span>
+      <strong>Extracted text</strong>
+      <span class="sep">/</span>
+      <span class="muted" id="src">loading…</span>
+    </div>
+    <div class="meta">
+      <span class="pill" id="stats">—</span>
+    </div>
+    <div class="actions">
+      <button id="copy-plain">Copy as text</button>
+      <button id="copy-md" class="primary">Copy as Markdown</button>
+      <button id="copy-json">Copy as JSON</button>
+      <button id="download">Download .txt</button>
+      <button id="discard" class="danger">Close</button>
+    </div>
+  </header>
+
+  <main class="stage">
+    <div id="loading" class="loading">Reading page…</div>
+    <div id="blocks" class="blocks" hidden></div>
+  </main>
+
+  <footer class="foot">
+    <label>
+      <input type="checkbox" id="include-images" checked />
+      Include images
+    </label>
+    <label>
+      <input type="checkbox" id="include-links" checked />
+      Include links
+    </label>
+    <span class="muted" id="status">Ready.</span>
+  </footer>
+
+  <script src="extract.js"></script>
+</body>
+</html>

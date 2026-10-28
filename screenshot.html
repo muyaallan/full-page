@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Screenshot preview</title>
+<link rel="stylesheet" href="theme.css" />
+<link rel="stylesheet" href="screenshot.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span class="dot"></span>
+      <strong>Copy-Proof Tools</strong>
+      <span class="sep">/</span>
+      <span class="muted" id="src">loading…</span>
+    </div>
+    <div class="meta">
+      <span class="pill" id="dims">—</span>
+      <span class="pill" id="method">—</span>
+    </div>
+    <div class="actions">
+      <button id="copy" class="ghost">Copy</button>
+      <button id="save" class="primary">Download PNG</button>
+      <button id="discard" class="ghost danger">Discard</button>
+    </div>
+  </header>
+
+  <main class="stage" id="stage">
+    <div class="loading" id="loading">Rendering preview…</div>
+    <img id="shot" alt="screenshot" hidden />
+  </main>
+
+  <div class="zoom">
+    <button data-z="fit" class="active">Fit</button>
+    <button data-z="1">100%</button>
+    <button data-z="0.5">50%</button>
+    <button data-z="0.25">25%</button>
+  </div>
+
+  <script src="screenshot.js"></script>
+</body>
+</html>
